@@ -1,6 +1,6 @@
 {
   "name": "@sesamehr/oauth-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OAuth 2.0 + OIDC client library for Sesame SSO authentication",
   "type": "module",
   "main": "./src/index.js",
@@ -30,6 +30,14 @@
   ],
   "author": "Sesame Team <tech@sesametime.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SesameHR/oauth-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SesameHR/oauth-client/issues"
+  },
+  "homepage": "https://github.com/SesameHR/oauth-client#readme",
   "dependencies": {
     "axios": "^1.11.0"
   },

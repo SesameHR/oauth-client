@@ -9,6 +9,18 @@ import {
 } from './utils/helpers.js';
 
 /**
+ * State Store Interface
+ * Custom state stores must implement these methods
+ *
+ * @typedef {Object} StateStore
+ * @property {function(string, any, number=): void} set - Store a value with optional expiration timestamp
+ * @property {function(string): any} get - Retrieve a value by key
+ * @property {function(string): boolean} has - Check if a key exists and is not expired
+ * @property {function(string): void} delete - Delete a value by key
+ * @property {function(): void} [stop] - Optional cleanup method for graceful shutdown
+ */
+
+/**
  * Sesame SSO Authentication Library
  * OAuth 2.0 client for Sesame SSO - BACKEND ONLY
  *
@@ -24,6 +36,17 @@ import {
  * });
  */
 export class SesameSSO {
+  /**
+   * @param {Object} config - OAuth configuration
+   * @param {string} config.ssoBaseUrl - Base URL of the SSO server
+   * @param {string} config.clientId - OAuth client ID
+   * @param {string} config.clientSecret - OAuth client secret
+   * @param {string} config.redirectUri - OAuth redirect URI
+   * @param {Object} [options] - Optional configuration
+   * @param {string} [options.defaultScope] - Default OAuth scope
+   * @param {number} [options.timeout=10000] - HTTP request timeout in milliseconds
+   * @param {StateStore} [options.stateStore] - Custom state store implementation (defaults to InMemoryTTLStore)
+   */
   constructor(config, options = {}) {
     // Validate required config
     if (!config?.ssoBaseUrl || !config?.clientId || !config?.clientSecret || !config?.redirectUri) {
