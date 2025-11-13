@@ -1,0 +1,41 @@
+# Development files
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+
+# IDE
+.idea
+.vscode
+*.sublime-*
+
+# Testing
+coverage/
+.nyc_output/
+test/
+tests/
+**/*.test.js
+**/*.spec.js
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.travis.yml
+.gitlab-ci.yml
+circle.yml
+
+# Documentation (already in npm with README.md)
+docs/
+examples/
+
+# Node
+node_modules/
+
+# Build artifacts (if you add build step later)
+dist/
+build/
