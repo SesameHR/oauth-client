@@ -168,17 +168,53 @@ Users can be associated with multiple companies. The `employees` array contains 
 - Storing the selected `company_id` and `sesame_employee_id` in the session
 - Using the appropriate employee context when making Sesame API calls
 
-### Using Sesame Credentials
+### Using Sesame API Client (Recommended)
 
-The `sesameCredentials` object contains everything needed to make direct calls to the Sesame API:
+The easiest way to make requests to Sesame API is using the built-in `SesameApiClient`:
 
 ```javascript
-const { sesame_private_token, region, employees } = result.sesameCredentials;
+import { SesameApiClient, SesameHelpers } from '@sesamehr/oauth-client';
 
-// Determine the Sesame API URL based on region
-const sesameApiUrl = `https://back-${region.toLowerCase()}.sesametime.com`;
+// After successful authentication
+const result = await sso.exchangeCodeForToken(code, state);
 
-// Make authenticated requests to Sesame API
+// Create API client from credentials
+const apiClient = SesameApiClient.create(result.sesameCredentials);
+
+// Make requests to Sesame API
+const meData = await apiClient.get('/api/v3/security/me-oauth');
+const employees = await apiClient.get('/api/v3/employees');
+
+// Check if user has employees
+if (!SesameHelpers.hasEmployees(result.sesameCredentials)) {
+  throw new Error('User is not associated with any company');
+}
+
+// Handle multiple employees
+if (SesameHelpers.hasMultipleEmployees(result.sesameCredentials)) {
+  const employees = SesameHelpers.getEmployees(result.sesameCredentials);
+  // Show employee selector UI
+} else {
+  const employee = SesameHelpers.getFirstEmployee(result.sesameCredentials);
+  // Use single employee
+}
+```
+
+### Manual API Calls (Alternative)
+
+If you prefer to make manual calls, use `SesameHelpers` to generate URLs:
+
+```javascript
+import axios from 'axios';
+import { SesameHelpers } from '@sesamehr/oauth-client';
+
+const { sesame_private_token, region } = result.sesameCredentials;
+
+// Get the API URL for the region
+const sesameApiUrl = SesameHelpers.getApiUrl(region);
+// Returns: 'https://back-eu.sesametime.com' (for EU region)
+
+// Make authenticated requests
 const response = await axios.get(`${sesameApiUrl}/api/v3/security/me-oauth`, {
   headers: {
     'Authorization': `Bearer ${sesame_private_token}`,

@@ -1,6 +1,6 @@
 {
   "name": "@sesamehr/oauth-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "OAuth 2.0 + OIDC client library for Sesame SSO authentication",
   "type": "module",
   "main": "./src/index.js",
